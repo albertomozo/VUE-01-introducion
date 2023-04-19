@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        .resaltado{
+            background-color: red;
+            color : white;
+        }
+        .enlace{
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .letratxiki{
+            font-size: xx-small;
+        } 
+    </style>
+</head>
+
+    <div id="app">
+       <h1>{{ nombreCompleto }}</h1>
+       <h3>Propiedad computada</h3>
+       <p>{{ conocimientosComp }}</p>
+       <h3>Datos personales</h3>
+       <p><input type="text" v-model="persona.nombre"></p>
+       <p><input type="text" v-model="persona.apellido"></p>
+       
+       <h3>lista </h3>
+        <ul v-for="(materia,index) in persona.conocimientos" :key="index">
+            <li>{{ materia.materia}} - {{materia.apto}}
+                <input type="checkbox" v-model="materia.apto"></input>
+                <span v-if="materia.apto">
+                    <input type="range" v-model="materia.valor" name="valor" value="{{materia.valor}}" min="0" max="5"></input>
+                </span>
+              
+
+            </li>
+    
+        </ul> 
+        
+
+
+       <h3>Materias</h3>  
+        <select name="selMaterias" @change="nuevaMateria">
+            <option v-for="materia in materias" :value="materia">{{materia}}</option>   
+        </select> 
+        <!-- pasarlo a checkbox --> 
+        <h3>Idioma</h3>
+        <div v-for="idioma in idiomas" >
+            <input type="radio" v-model="persona.idioma"  
+                :checked="idioma === persona.idioma ? true : false " 
+                name="idioma"
+                :value ="idioma"
+            /> 
+        {{idioma}}        </div>
+        <h3>Suscripción</h3>
+        <div v-if="!pro">
+            Acepto : He leido las <span class="enlace" @click.prevent="leerCondiciones"> condiciones </span>
+            <input type="checkbox" id="acepto"
+                v-model="pro" 
+                :disabled="isDisabled"
+                @change="cambiarPro"
+            > 
+        </div>
+        <div v-else>
+            <p>Ya eres pro</p>
+            <p>Te voy a poner dificil desapuntarte!!!</p>
+        </div>
+        <h3>Guardar Cambios</h3>
+        <button @click="guardarCambios">GUARDAR CAMBIOS</button>
+        <p><span class="letratxiki">cambiar condiciones</span></p>
+        <!-- abrir capa donde se permita poner pro a false-->
+
+
+    </div>
+
+      
+
+    <script>
+        Vue.createApp({
+            data () {
+                return {
+                   persona : {
+                        nombre : 'Aitor',
+                        apellido : 'Alberdi',
+                        conocimientos : [
+                            {materia:'html', apto : true, valor : 0},                           {materia:'css', apto : false},
+                            {materia:'js', apto : false, valor :0},
+                            {materia:'vue', apto : false, valor :0}
+                            
+                        ],
+                        idioma : 'es',
+                        disablepro : true,
+                        pro : false,
+                    },
+                    materias : ['html','css','js','vue','git','saas','bootstarp'],
+                    idiomas : ['es','eu','en','fr'],
+                    
+                }  
+                
+             },
+             computed : {
+                nombreCompleto(){
+                      return this.persona.nombre + ' ' + this.persona.apellido;
+                },
+                conocimientosComp() {
+                    return this.persona.conocimientos.filter((conocimiento) => conocimiento.apto == true );
+
+                    
+                },
+                frontEnd () {
+                    /*
+                        función que devuelva 
+                            Full si tienen conocimientos de html,css,js
+                            senior si conotrola 2 de las 3 
+                            junior si controla 1 de las 3 
+                    */
+                },
+                isDisabled(){
+                    return this.persona.disablepro;
+
+                },
+             },
+             methods : {
+                nuevaMateria (e) {
+                    console.log(e);
+                    console.log(e.target.selectedOptions);
+                    console.log(e.target.selectedOptions[0].value);
+                    nuevaMateria = {
+                        materia: e.target.selectedOptions[0].value,
+                        apto : false
+                    }
+                    this.persona.conocimientos.push(nuevaMateria ); //)
+                    /* comprobar que no haya duplicados */
+
+                },
+                leerCondiciones (e) {  
+                    let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=600,height=300,left=100,top=100`;
+
+                    ventana = open("/documento.html", "test", params);
+                    //this.habilitarPro();              
+                                           
+                },
+                habilitarPro (){
+                    this.persona.disablepro=false ; 
+                },
+                cambiarPro (e) {
+                    this.persona.pro=!this.persona.pro;                
+                },
+                guardarCambios(){
+                    console.log('guardarCambios');
+                    console.log(JSON.stringify(this.persona));
+                    localStorage.setItem('persona', JSON.stringify(this.persona));
+                    alert('Guardado cambios en Localstorage)');
+                }
+            },
+            /* HOOKS */
+            mounted() {
+                if (localStorage.getItem('persona')) {
+                    this.persona = JSON.parse(localStorage.getItem('persona'));
+                }
+            },
+            
+        }).mount('#app')
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ver valores</title>
+<!--   <link rel="stylesheet" href="main.css"> -->
+</head>
+
+<body>
+
+
+  <div id="shopping-list">
+    <h1>{{ texto }}</h1>
+    <input v-model="texto"  @keyDown="pulsarTecla">
+  </div>
+
+  <script src="https://unpkg.com/vue@3"></script>
+  <script>
+
+    Vue.createApp({
+      data() {
+        return {
+          texto : 'TEXTO',
+          valores : [],
+          MAX : 8
+        }
+      },
+      methods: {
+        pulsarTecla(e) {
+            this.valores.push(e.key);
+            console.log(this.valores);
+            if (this.texto.length == this.MAX)
+            {
+                alert('has llegado al maximo ' + this.MAX);
+            }
+        }
+      }
+    }).mount('#shopping-list')
+  </script>
+</body>
+
+</html>

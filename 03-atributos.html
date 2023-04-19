@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        .resaltado{
+            background-color: red;
+            color : white;
+        }
+    </style>
+</head>
+
+    <div id="app">
+        <!-- v-bind  -->
+        <div v-bind:id="dynamicId">el id ed {{ dinamicId}}</div>
+        <!-- shorthand  -->
+        <!-- <div :id="dynamicId">el id ed {{ dinamicId}} con abreviatura</div> -->
+        <div :class="clase">clase texto resaltado</div>         <!-- <p>{{ `<strong>Vue dice </strong>: ${moustaches} con sticks ` }}</p> -->
+        <a :href="url" target="_blank">{{ url }} </a>
+        <p><a v-bind="objectOfAttrs" > {{ objectOfAttrs.href}} </a></p>
+      
+
+
+    </div>
+
+      
+
+    <script>
+        Vue.createApp({
+            data () {
+                return {
+                    dinamicId : '07',
+                    clase : 'resaltado',
+                    url : 'http://www.github.com' ,
+                    objectOfAttrs : {
+                        id : 'enlace01',
+                        class : 'resaltado',
+                        href : 'http://www.areafor.com',
+                        target : '_blank'
+                    }                            
+                  
+                }
+            }
+        }).mount('#app')
+    </script>
+
+    
+</body>
+</html>

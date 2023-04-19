@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        .resaltado{
+            background-color: red;
+            color : white;
+        }
+    </style>
+</head>
+
+    <div id="app">
+       <h1>{{ nombreCompleto }}</h1>
+       <h3>Propiedad computada</h3>
+       <p>{{ conocimientosComp }}</p>
+       
+       <h3>lista </h3>
+        <ul v-for="(materia,index) in persona.conocimientos" :key="index">
+            <li>{{ materia.materia}} - {{materia.apto}}
+                <input type="checkbox" v-model="materia.apto"></input>
+
+            </li>
+    
+        </ul> 
+        
+
+
+       <h3>Materias</h3>  
+        <select name="selMaterias" @change="nuevaMateria">
+            <option v-for="materia in materias" :value="materia">{{materia}}</option>   
+        </select> 
+        <!-- pasarlo a checkbox --> 
+
+        
+
+    </div>
+
+      
+
+    <script>
+        Vue.createApp({
+            data () {
+                return {
+                   persona : {
+                        nombre : 'Aitor',
+                        apellido : 'Alberdi',
+                        conocimientos : [
+                            {materia:'html', apto : true},
+                            {materia:'css', apto : false},
+                            {materia:'js', apto : false},
+                            {materia:'vue', apto : false},
+                            
+                        ]
+
+                    },
+                    materias : ['html','css','js','vue','git','saas','bootstarp']
+                    
+                }  
+                
+             },
+             computed : {
+                nombreCompleto(){
+                      return this.persona.nombre + ' ' + this.persona.apellido;
+                },
+                conocimientosComp() {
+                    return this.persona.conocimientos.filter((conocimiento) => conocimiento.apto == true );
+
+                    
+                },
+                frontEnd () {
+                    /*
+                        función que devuelva 
+                            Full si tienen conocimientos de html,css,js
+                            senior si conotrola 2 de las 3 
+                            junior si controla 1 de las 3 
+                    */
+                }
+             },
+             methods : {
+                nuevaMateria (e) {
+                    console.log(e);
+                    console.log(e.target.selectedOptions);
+                    console.log(e.target.selectedOptions[0].value);
+                    nuevaMateria = {
+                        materia: e.target.selectedOptions[0].value,
+                        apto : false
+                    }
+                    this.persona.conocimientos.push(nuevaMateria ); //)
+                    /* comprobar que no haya duplicados */
+
+                }
+             }
+            
+        }).mount('#app')
+    </script>
+
+    
+</body>
+</html>

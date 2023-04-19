@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>lista de la compra</title>
+<!--   <link rel="stylesheet" href="main.css"> -->
+</head>
+
+<body>
+
+
+  <div id="shopping-list">
+    <h1>Lista de la compra</h1>
+    <input v-model="texto"  @keyDown="pulsarTecla">
+    <input v-model="quedan" size="2">
+  
+    <div class="tags">
+        <div class="tag" v-for="(producto, index) in lista" :key="index">
+        {{ producto }} 
+        </div>
+    </div>
+</div>
+
+  <script src="https://unpkg.com/vue@3"></script>
+  <script>
+
+    Vue.createApp({
+      data() {
+        return {
+          texto : 'Introduce producto',
+          valores : [],
+          lista : [],
+          MAX : 140
+        }
+      },
+      methods: {
+        pulsarTecla(e) {
+            if (this.texto !== "" && e.key === "Enter") {
+                this.lista.push(this.texto);
+                this.texto = "";
+                console.log(this.lista);
+                return;
+            }
+            if (this.texto.length>=this.MAX)
+            {
+                console.log('te pasaste');
+                alert('ya no puedes meter más caracteres');
+                return;
+            }
+        }      
+      },
+      computed : {
+        quedan (){
+            return this.MAX-this.texto.length;
+        } 
+        
+      }
+
+    }).mount('#shopping-list')
+  </script>
+</body>
+
+</html>

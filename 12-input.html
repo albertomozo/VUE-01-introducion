@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>lista de la compra</title>
+<!--   <link rel="stylesheet" href="main.css"> -->
+</head>
+
+<body>
+
+
+  <div id="shopping-list">
+    <h1>Lista de la compra</h1>
+    <input v-model="texto"  @keyDown="pulsarTecla">
+  
+    <div class="tags">
+        <div class="tag" v-for="(producto, index) in lista" :key="index">
+        {{ producto }} 
+        </div>
+    </div>
+</div>
+
+  <script src="https://unpkg.com/vue@3"></script>
+  <script>
+
+    Vue.createApp({
+      data() {
+        return {
+          texto : 'Introduce producto',
+          valores : [],
+          lista : [],
+          MAX : 8
+        }
+      },
+      methods: {
+        pulsarTecla(e) {
+            if (this.texto !== "" && e.key === "Enter") {
+                this.lista.push(this.texto);
+                this.texto = "";
+                console.log(this.lista);
+                return;
+            }
+        }      
+     }
+    }).mount('#shopping-list')
+  </script>
+</body>
+
+</html>

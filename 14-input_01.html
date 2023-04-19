@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>lista de la compra</title>
+<!--   <link rel="stylesheet" href="main.css"> -->
+<style>
+    .tachado  {
+        text-decoration:overline;
+    }
+</style>
+</head>
+
+<body>
+
+
+  <div id="shopping-list">
+    <h1>Lista de la compra</h1>
+    <input v-model="texto"  @keyDown="pulsarTecla">
+    <input v-model="quedan" size="2">
+  
+    <div class="tags">
+        <div class="tag" v-for="item in lista" :key="index">
+            
+        <p><span 
+            
+            @click="cambiarComprado(item)"
+            :class="{tachado: item.comprado}"
+
+            
+        >
+        {{item.comprado}} {{item.producto}} </span>
+        
+    </p>
+    </div>
+</div>
+
+  <script src="https://unpkg.com/vue@3"></script>
+  <script>
+
+    Vue.createApp({
+      data() {
+        return {
+          texto : 'Introduce producto',
+          valores : [],
+          lista : [{producto:'Leche',comprado: false},
+          {producto:'pan',comprado: false}],
+          MAX : 140
+        }
+      },
+      methods: {
+        pulsarTecla(e) {
+            if (this.texto !== "" && e.key === "Enter") {
+                item = {
+                    producto :this.texto,   
+                    comprado : false
+                }
+                this.lista.push(item);
+                this.texto = "";
+                console.log(this.lista);
+                return;
+            }
+            if (this.texto.length>=this.MAX)
+            {
+                console.log('te pasaste');
+                alert('ya no puedes meter más caracteres');
+                return;
+            }
+        },
+        cambiarComprado (item){
+            console.log(item.comprado);
+            item.comprado = !item.comprado;
+            console.log(item.comprado);
+        }     
+      },
+      computed : {
+        quedan (){
+            return this.MAX-this.texto.length;
+        },
+        estaComprado() {
+            //return this.lista.comprado ;      
+         }
+        
+      }
+
+    }).mount('#shopping-list')
+  </script>
+</body>
+
+</html>
